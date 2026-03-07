@@ -159,6 +159,34 @@ SVXLINK_ARGS=--logfile=/var/log/svxlink/svxlink.log
 
 ---
 
+## Pre-built Images
+
+Multi-architecture Docker images (`amd64` and `arm64`/Raspberry Pi) are automatically built and published to GitHub Container Registry via GitHub Actions.
+
+### Pull the standard image
+
+```sh
+docker pull ghcr.io/audric/svxlink-docker:master
+```
+
+### Pull the USRP Logic variant
+
+```sh
+docker pull ghcr.io/audric/svxlink-docker-usrp:master
+```
+
+To use a pre-built image instead of building locally, replace the `build:` section in `docker-compose.yml` with:
+
+```yaml
+image: ghcr.io/audric/svxlink-docker:master
+```
+
+### USRP Logic Variant
+
+The USRP Logic variant is built from a separate Dockerfile (`Dockerfile.usrp`) using the `dl1hrc/svxlink` fork with the `-DWITH_CONTRIB_USRP_LOGIC=ON` cmake flag. To build it locally, set `dockerfile: Dockerfile.usrp` in `docker-compose.yml`.
+
+---
+
 ## Notes
 
 - Make sure your audio devices and GPIO access are properly configured on the host
