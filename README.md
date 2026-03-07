@@ -33,13 +33,13 @@ docker compose restart
 Replace the `build:` block in `docker-compose.yml` with:
 
 ```yaml
-image: ghcr.io/audric/svxlink-docker:master
+image: ghcr.io/audric/svxlink-docker:latest
 ```
 
 For the USRP Logic variant (dl1hrc fork):
 
 ```yaml
-image: ghcr.io/audric/svxlink-docker-usrp:master
+image: ghcr.io/audric/svxlink-docker-usrp:latest
 ```
 
 ## Environment Variables
