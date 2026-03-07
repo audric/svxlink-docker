@@ -34,16 +34,16 @@ services:
       - ./config/usr/share/svxlink:/usr/share/svxlink
       # - ./config/share/sounds:/usr/share/svxlink/sounds
 
-      # Logs (optionnel)
+      # Logs (optional)
       - ./logs:/var/log/svxlink
 
-      # Données (optionnel)
+      # Data (optional)
       - ./data:/var/lib/svxlink
 
-    # Sound card and GPIO access (optionnel)
+    # Sound card and GPIO access (optional)
     # devices:
       # - /dev/snd:/dev/snd
       # - /dev/gpiochip0:/dev/gpiochip0
 
-    # (Optionnel) USB/RTL-SDR
+    # (Optional) USB/RTL-SDR
     #   - /dev/bus/usb:/dev/bus/usb
