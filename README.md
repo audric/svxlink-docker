@@ -1,8 +1,6 @@
 # SvxLink Docker
 
-Dockerized [SvxLink](https://github.com/sm0svx/svxlink) — run **svxlink**, **remotetrx**, and/or **svxreflector** from a single multi-arch image (`amd64` / `arm64`).
-
-Pre-built images are published to GitHub Container Registry on every push.
+Run [SvxLink](https://github.com/sm0svx/svxlink) in Docker — **svxlink**, **remotetrx**, or **svxreflector** — on `amd64` or `arm64` (Raspberry Pi included).
 
 ## Quick Start
 
@@ -12,9 +10,11 @@ cd svxlink-docker
 docker compose up -d
 ```
 
-This builds the image locally and starts svxlink with the default configuration.
+That's it. The pre-built image is pulled automatically.
 
-### Extract default config files (first run)
+## Configure
+
+Extract the default config files from the container:
 
 ```sh
 mkdir -p config/etc config/usr/share
@@ -22,65 +22,71 @@ docker compose cp svxlink:/etc/svxlink config/etc/
 docker compose cp svxlink:/usr/share/svxlink config/usr/share/
 ```
 
-Edit files in `config/` to match your setup, then restart:
+Edit the files in `config/` to match your setup, then restart:
 
 ```sh
 docker compose restart
 ```
 
-### Use a pre-built image (skip the build)
+## Choose which services to run
 
-Replace the `build:` block in `docker-compose.yml` with:
-
-```yaml
-image: ghcr.io/audric/svxlink-docker:latest
-```
-
-For the USRP Logic variant (dl1hrc fork):
-
-```yaml
-image: ghcr.io/audric/svxlink-docker-usrp:latest
-```
-
-## Environment Variables
-
-Control which services run and how, in `docker-compose.yml`:
+Set these in the `environment:` section of `docker-compose.yml`:
 
 | Variable | Default | Description |
 |---|---|---|
-| `START_SVXLINK` | `1` | Start svxlink |
-| `START_REMOTETRX` | `0` | Start remotetrx |
-| `START_SVXREFLECTOR` | `0` | Start svxreflector |
-| `SVXLINK_CONF` | `/etc/svxlink/svxlink.conf` | Config file path |
-| `REMOTETRX_CONF` | `/etc/svxlink/remotetrx.conf` | Config file path |
-| `SVXREFLECTOR_CONF` | `/etc/svxlink/svxreflector.conf` | Config file path |
+| `START_SVXLINK` | `1` | Enable svxlink |
+| `START_REMOTETRX` | `0` | Enable remotetrx |
+| `START_SVXREFLECTOR` | `0` | Enable svxreflector |
+
+Extra options:
+
+| Variable | Default | Description |
+|---|---|---|
 | `SVXLINK_ARGS` | *(empty)* | Extra CLI args (e.g. `--logfile=/var/log/svxlink/svxlink.log`) |
 | `REMOTETRX_ARGS` | *(empty)* | Extra CLI args |
 | `SVXREFLECTOR_ARGS` | *(empty)* | Extra CLI args |
 
-## Hardware Access (Raspberry Pi / Sound Cards / GPIO)
+## Hardware access (sound card, GPIO, USB)
 
 Uncomment the relevant lines in `docker-compose.yml`:
 
 ```yaml
 devices:
-  - /dev/snd:/dev/snd
-  - /dev/gpiochip0:/dev/gpiochip0
-  # - /dev/bus/usb:/dev/bus/usb   # for RTL-SDR
+  - /dev/snd:/dev/snd           # sound card
+  - /dev/gpiochip0:/dev/gpiochip0   # GPIO (Raspberry Pi)
+  - /dev/bus/usb:/dev/bus/usb   # USB / RTL-SDR
 ```
 
-Or enable `privileged: true` for full device access.
+Or set `privileged: true` for full device access.
 
-## Building Locally
+## Logs
 
-To build from a different branch or fork:
+```sh
+docker compose logs -f --tail=500
+```
+
+## USRP Logic variant
+
+To use the [dl1hrc/svxlink](https://github.com/dl1hrc/svxlink) USRP fork, change the image in `docker-compose.yml`:
+
+```yaml
+image: ghcr.io/audric/svxlink-docker-usrp:latest
+```
+
+## Building locally
+
+To build from source instead of using the pre-built image, comment out `image:` and uncomment the `build:` block in `docker-compose.yml`, then:
+
+```sh
+docker compose up -d --build
+```
+
+Build from a different branch:
 
 ```sh
 docker compose build --build-arg GIT_BRANCH=develop
 docker compose up -d
 ```
-
-To use the USRP Logic variant, set `dockerfile: Dockerfile.usrp` in `docker-compose.yml`.
 
 Rebuild from scratch:
 
@@ -89,16 +95,9 @@ docker compose build --no-cache
 docker compose up -d
 ```
 
-## Logs
-
-```sh
-docker compose logs -f --tail=500
-```
-
 ## License
 
-SvxLink is licensed under the **GPL**.
-This Docker setup follows the same spirit of openness and reuse.
+SvxLink is licensed under the **GPL**. This Docker setup follows the same spirit of openness and reuse.
 
 ---
 

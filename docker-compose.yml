@@ -1,8 +1,10 @@
 services:
   svxlink:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/audric/svxlink-docker:latest
+    # To build locally instead, comment out 'image:' and uncomment:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: svxlink
     restart: unless-stopped
     # privileged: true
