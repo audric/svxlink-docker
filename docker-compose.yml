@@ -15,7 +15,7 @@ services:
 
 
     environment:
-      - TZ=Europe/Paris
+      - TZ=Europe/Rome
       - START_SVXLINK=1
       - START_REMOTETRX=0
       - START_SVXREFLECTOR=0
