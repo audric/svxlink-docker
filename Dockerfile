@@ -42,6 +42,30 @@ RUN set -eux; \
     ls -lh *.deb
 
 # =========================================================
+# STAGE 1b — BUILD GeuReflector (replaces standard svxreflector)
+# =========================================================
+FROM debian:trixie-slim AS geureflector-builder
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get -y install --no-install-recommends \
+    git ca-certificates \
+    cmake g++ make \
+    libsigc++-2.0-dev libssl-dev libjsoncpp-dev libpopt-dev \
+    libopus-dev libgsm1-dev libspeex-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+ARG GEUREFLECTOR_URL=https://github.com/audric/GeuReflector.git
+ARG GEUREFLECTOR_BRANCH=master
+ARG NUM_CORES=4
+
+WORKDIR /build
+RUN git clone --recursive --depth 1 --branch "${GEUREFLECTOR_BRANCH}" "${GEUREFLECTOR_URL}" geureflector
+WORKDIR /build/geureflector
+
+RUN cmake -S src -B build -DLOCAL_STATE_DIR=/var -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build build -j"${NUM_CORES}"
+
+# =========================================================
 # STAGE 2 — RUNTIME
 # =========================================================
 FROM debian:trixie-slim
@@ -68,6 +92,9 @@ RUN mkdir -p /etc/svxlink /var/log/svxlink /var/lib/svxlink && \
 ENV SVXLINK_CONF=/etc/svxlink/svxlink.conf \
     REMOTETRX_CONF=/etc/svxlink/remotetrx.conf \
     SVXREFLECTOR_CONF=/etc/svxlink/svxreflector.conf
+
+# Replace standard svxreflector with GeuReflector
+COPY --from=geureflector-builder /build/geureflector/build/bin/svxreflector /usr/bin/svxreflector
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

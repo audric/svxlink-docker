@@ -10,7 +10,10 @@ services:
     # privileged: true
 
     ports:
-      - "5300:5300"   # svxreflectors
+      - "5300:5300"       # svxreflector clients
+      - "5302:5302"       # GeuReflector trunk links
+      # - "5303:5303"     # GeuReflector satellite relay
+      # - "8080:8080"     # GeuReflector HTTP status (/status, /config)
       - "5198:5198/udp"   # EchoLink
       - "5199:5199/udp"   # EchoLink
       - "5200:5200/tcp"   # EchoLink

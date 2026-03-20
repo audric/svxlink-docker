@@ -2,6 +2,8 @@
 
 Run [SvxLink](https://github.com/sm0svx/svxlink) in Docker — **svxlink**, **remotetrx**, or **svxreflector** — on `amd64` or `arm64` (Raspberry Pi included).
 
+The standard svxreflector is replaced by [GeuReflector](https://github.com/audric/GeuReflector), an extended version that adds server-to-server trunk protocol for linking multiple reflectors together.
+
 ## Quick Start
 
 ```sh
@@ -36,7 +38,7 @@ Set these in the `environment:` section of `docker-compose.yml`:
 |---|---|---|
 | `START_SVXLINK` | `1` | Enable svxlink |
 | `START_REMOTETRX` | `0` | Enable remotetrx |
-| `START_SVXREFLECTOR` | `0` | Enable svxreflector |
+| `START_SVXREFLECTOR` | `0` | Enable svxreflector (GeuReflector) |
 
 Extra options:
 
@@ -45,6 +47,19 @@ Extra options:
 | `SVXLINK_ARGS` | *(empty)* | Extra CLI args (e.g. `--logfile=/var/log/svxlink/svxlink.log`) |
 | `REMOTETRX_ARGS` | *(empty)* | Extra CLI args |
 | `SVXREFLECTOR_ARGS` | *(empty)* | Extra CLI args |
+
+## GeuReflector ports
+
+When running the reflector (`START_SVXREFLECTOR=1`), these ports are available:
+
+| Port | Description |
+|---|---|
+| `5300` | Client connections (same as standard svxreflector) |
+| `5302` | Server-to-server trunk links |
+| `5303` | Satellite relay connections (optional, uncomment in `docker-compose.yml`) |
+| `8080` | HTTP status endpoints `/status` and `/config` (optional, uncomment in `docker-compose.yml`) |
+
+Trunk and satellite ports are configured in `svxreflector.conf` via `[TRUNK_*]` and `[SATELLITE]` sections. See the [GeuReflector documentation](https://github.com/audric/GeuReflector) for details.
 
 ## Hardware access (sound card, GPIO, USB)
 
@@ -81,10 +96,11 @@ To build from source instead of using the pre-built image, comment out `image:` 
 docker compose up -d --build
 ```
 
-Build from a different branch:
+Build from a different SvxLink or GeuReflector branch:
 
 ```sh
 docker compose build --build-arg GIT_BRANCH=develop
+docker compose build --build-arg GEUREFLECTOR_BRANCH=develop
 docker compose up -d
 ```
 
