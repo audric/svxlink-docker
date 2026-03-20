@@ -62,7 +62,7 @@ WORKDIR /build
 RUN git clone --recursive --depth 1 --branch "${GEUREFLECTOR_BRANCH}" "${GEUREFLECTOR_URL}" geureflector
 WORKDIR /build/geureflector
 
-RUN cmake -S src -B build -DLOCAL_STATE_DIR=/var -DCMAKE_BUILD_TYPE=Release && \
+RUN cmake -S src -B build -DLOCAL_STATE_DIR=/var -DCMAKE_BUILD_TYPE=Release -DUSE_ALSA=OFF && \
     cmake --build build -j"${NUM_CORES}"
 
 # =========================================================
