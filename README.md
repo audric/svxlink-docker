@@ -117,4 +117,4 @@ SvxLink is licensed under the **GPL**. This Docker setup follows the same spirit
 
 ---
 
-Maintained by **F4HLV** — contributions welcome.
+Maintained by **IW1GEU** — contributions welcome.
