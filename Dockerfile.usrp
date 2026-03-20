@@ -52,7 +52,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
     git ca-certificates \
     cmake g++ make \
     libsigc++-2.0-dev libssl-dev libjsoncpp-dev libpopt-dev \
-    libopus-dev libgsm1-dev libspeex-dev libasound2-dev \
+    libopus-dev libgsm1-dev libspeex-dev \
  && rm -rf /var/lib/apt/lists/*
 
 ARG GEUREFLECTOR_URL=https://github.com/audric/GeuReflector.git
