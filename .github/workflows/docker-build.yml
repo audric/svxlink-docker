@@ -6,6 +6,8 @@ on:
     tags: ["v*"]
   pull_request:
     branches: [master]
+  repository_dispatch:
+    types: [rebuild]
 
 env:
   REGISTRY: ghcr.io
