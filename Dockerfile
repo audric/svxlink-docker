@@ -57,6 +57,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
 ARG GEUREFLECTOR_URL=https://github.com/audric/GeuReflector.git
 ARG GEUREFLECTOR_BRANCH=master
 ARG NUM_CORES=4
+ARG GEUREFLECTOR_CACHEBUST=0
 
 WORKDIR /build
 RUN git clone --recursive --depth 1 --branch "${GEUREFLECTOR_BRANCH}" "${GEUREFLECTOR_URL}" geureflector
