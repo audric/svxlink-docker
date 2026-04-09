@@ -2,7 +2,7 @@
 
 Run [SvxLink](https://github.com/sm0svx/svxlink) in Docker — **svxlink**, **remotetrx**, or **svxreflector** — on `amd64` or `arm64` (Raspberry Pi included).
 
-The standard svxreflector is replaced by [GeuReflector](https://github.com/audric/GeuReflector), an extended version that adds server-to-server trunk protocol for linking multiple reflectors together.
+The standard svxreflector is replaced by [GeuReflector](https://github.com/audric/GeuReflector), an extended version that adds server-to-server trunk protocol for linking multiple reflectors together and MQTT publishing support.
 
 ## Quick Start
 
