@@ -62,7 +62,7 @@ ARG GEUREFLECTOR_CACHEBUST=0
 
 WORKDIR /build
 RUN git clone --recursive --depth 1 --branch "${GEUREFLECTOR_BRANCH}" "${GEUREFLECTOR_URL}" geureflector && \
-    cd geureflector && git fetch --tags
+    cd geureflector && git fetch --unshallow --tags
 WORKDIR /build/geureflector
 
 RUN cmake -S src -B build -DLOCAL_STATE_DIR=/var -DCMAKE_BUILD_TYPE=Release -DUSE_ALSA=OFF && \
