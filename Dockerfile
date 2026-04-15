@@ -52,7 +52,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
     cmake g++ make \
     libsigc++-2.0-dev libssl-dev libjsoncpp-dev libpopt-dev \
     libopus-dev libgsm1-dev libspeex-dev \
-    libmosquitto-dev \
+    libmosquitto-dev libhiredis-dev \
  && rm -rf /var/lib/apt/lists/*
 
 ARG GEUREFLECTOR_URL=https://github.com/audric/GeuReflector.git
@@ -79,7 +79,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
     libasyncaudio1.6t64 libasynccore1.6t64 libasynccpp1.6t64 libcurl4t64 \
     libgcrypt20 libgsm1 libjsoncpp26 libpopt0 librtlsdr0 \
     libsigc++-2.0-0v5 libtcl8.6 libgcc-s1 libstdc++6 \
-    libasound2 libgpiod3 libogg0 libmosquitto1 \
+    libasound2 libgpiod3 libogg0 libmosquitto1 libhiredis1.1.0 \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /build/svxlink/build/*.deb /tmp/svxlink.deb
