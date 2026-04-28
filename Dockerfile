@@ -61,7 +61,8 @@ ARG NUM_CORES=4
 ARG GEUREFLECTOR_CACHEBUST=0
 
 WORKDIR /build
-RUN git clone --recursive --depth 1 --branch "${GEUREFLECTOR_BRANCH}" "${GEUREFLECTOR_URL}" geureflector && \
+RUN echo "GeuReflector cachebust: ${GEUREFLECTOR_CACHEBUST}" && \
+    git clone --recursive --depth 1 --branch "${GEUREFLECTOR_BRANCH}" "${GEUREFLECTOR_URL}" geureflector && \
     cd geureflector && git fetch --unshallow --tags
 WORKDIR /build/geureflector
 
