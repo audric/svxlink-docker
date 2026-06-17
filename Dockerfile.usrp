@@ -98,8 +98,14 @@ ENV SVXLINK_CONF=/etc/svxlink/svxlink.conf \
     REMOTETRX_CONF=/etc/svxlink/remotetrx.conf \
     SVXREFLECTOR_CONF=/etc/svxlink/svxreflector.conf
 
-# Replace standard svxreflector with GeuReflector
+# Replace standard svxreflector with GeuReflector.
+# GeuReflector builds its own Async 1.8 shared libraries, but the runtime only
+# has Debian's Async 1.6 (libasync*1.6t64). Copy the 1.8 libs the binary is
+# linked against (libasync{cpp,audio,core}.so.1.8) so it can load at runtime;
+# the versioned sonames coexist with the 1.6 libs used by svxlink/remotetrx.
 COPY --from=geureflector-builder /build/geureflector/build/bin/svxreflector /usr/bin/svxreflector
+COPY --from=geureflector-builder /build/geureflector/build/lib/libasync*.so* /usr/lib/
+RUN ldconfig
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
